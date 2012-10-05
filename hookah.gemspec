@@ -4,8 +4,8 @@ require File.expand_path('../lib/hookah/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Avdi Grimm"]
   gem.email         = ["avdi@avdi.org"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = %q{Coming soon}
+  gem.summary       = %q{Coming soon}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($\)
