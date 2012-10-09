@@ -15,12 +15,12 @@ module Hookah
           end
 
       m.module_eval do
-        define_method("#{name}!") do
-          # NOOP
+        define_method("#{name}!") do |*args|
+          call_event_handlers(name, *args)
         end
 
-        define_method("on_#{name}") do
-          # NOOP
+        define_method("on_#{name}") do |&handler|
+          add_event_handler(name, &handler)
         end
       end
 
