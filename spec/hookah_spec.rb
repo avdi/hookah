@@ -2,30 +2,44 @@ require 'spec_helper'
 require 'hookah'
 
 describe Hookah do
-  class ZeroWing
-    Hookah.enhance(self) do
-      event :we_get_signal, :message
+  describe "Internal Callbacks" do
+    class ZeroWing
+      Hookah.enhance(self) do
+        event :we_get_signal
+        event :all_your_base_are_belong_to_us
+      end
+
+      def initialize(probe)
+        on_we_get_signal do |message|
+          probe << "received: #{message}"
+          probe << "WHAT!!!"
+        end
+        on_all_your_base_are_belong_to_us do
+          probe << "What you say!"
+        end
+      end
+
+      def start_game
+        we_get_signal!("How are you gentlemen")
+      end
+      def aybabtu
+        all_your_base_are_belong_to_us!
+      end
     end
 
-    def start_game
-      we_get_signal!("How are you gentlemen")
+    let(:probe){[]}
+    let(:zw){ZeroWing.new(probe)}
+    it "calls internal instance callbacks" do
+      zw.start_game
+      probe.should include("received: How are you gentlemen")
+      probe.should include("WHAT!!!")
     end
-  end
-
-  specify 'external instance listeners' do
-    pending 'completion of builder'
-    listener = double.as_null_object
-    zw = ZeroWing.new
-    zw.add_listener(listener)
-
-    listener.should_receive(:on_we_get_signal).
-      with("How are you gentlemen")
-    zw.start_game
+    it "differentiates events" do
+      zw.aybabtu
+      probe.should include("What you say!")
+      probe.should_not include ("WHAT!!!")
+    end
   end
 end
 
-# listener = ZeroWingListener.new
-# zw = ZeroWing.new
-# zw.add_listener(listener)
 
-# zw.start_game
